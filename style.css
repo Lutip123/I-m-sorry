@@ -1,0 +1,206 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    background: #111;
+    color: #eee;
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, #553333 0%, transparent 35%),
+        radial-gradient(circle at 80% 80%, #292d48 0%, transparent 35%),
+        linear-gradient(135deg, #080808, #191919);
+    z-index: -2;
+}
+
+.background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.envelope {
+    width: 340px;
+    height: 220px;
+    position: relative;
+    cursor: pointer;
+    transition: .6s ease;
+    filter: drop-shadow(0 25px 40px rgba(0,0,0,.5));
+}
+
+.envelope:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #d7c0a3;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+/* Flap dibuat dengan clip-path (segitiga), bukan border-trick,
+   supaya animasi "buka amplop" halus dan tidak pecah saat transform. */
+.flap {
+    position: absolute;
+    inset: 0;
+    height: 55%;
+    background: linear-gradient(135deg, #c9ac86, #b89b7c);
+    clip-path: polygon(0 0, 100% 0, 50% 85%);
+    z-index: 3;
+    transform-origin: top center;
+    transition: transform .7s ease, opacity .7s ease;
+    border-radius: 5px 5px 0 0;
+    pointer-events: none;
+}
+
+.flap.open {
+    transform: rotateX(180deg);
+    opacity: 0;
+}
+
+.letter-preview {
+    position: absolute;
+    left: 25px;
+    right: 25px;
+    bottom: 20px;
+    height: 145px;
+    background: #fffaf0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    font-size: 20px;
+    border-radius: 3px;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.letter {
+    display: none;
+    width: min(720px, 94vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 55px 50px;
+    background: rgba(255, 250, 240, .96);
+    color: #292929;
+    border-radius: 8px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    animation: appear .8s ease forwards;
+}
+
+.letter h1 {
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: normal;
+    margin: 15px 0 30px;
+    color: #4b2525;
+}
+
+.letter p {
+    font-size: 18px;
+    line-height: 1.9;
+    margin-bottom: 22px;
+}
+
+.small {
+    color: #8b7770;
+    font-size: 14px !important;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.highlight {
+    font-size: 24px !important;
+    font-weight: bold;
+    color: #6b2929;
+}
+
+.last {
+    margin-top: 40px;
+    font-style: italic;
+    color: #76645f;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 30px;
+    background: #4b2525;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: .85;
+}
+
+.music-control {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 600px) {
+    .container { padding: 15px; }
+
+    .envelope {
+        width: 300px;
+        height: 195px;
+    }
+
+    .letter {
+        padding: 35px 25px;
+    }
+
+    .letter p {
+        font-size: 16px;
+    }
+}
